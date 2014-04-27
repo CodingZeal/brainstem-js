@@ -52,7 +52,7 @@ class window.Brainstem.StorageManager
     !!@collections[name]
 
   setErrorInterceptor: (interceptor) ->
-    @errorInterceptor = interceptor || (handler, modelOrCollection, options, jqXHR, requestParams) -> handler?(jqXHR)
+    @errorInterceptor = interceptor
 
   # Request a model to be loaded, optionally ensuring that associations be included as well.  A loader (which is a jQuery promise) is returned immediately and is resolved
   # with the model from the StorageManager when the load, and any dependent loads, are complete.
@@ -138,6 +138,9 @@ class window.Brainstem.StorageManager
 
     loader = new loaderClass(storageManager: this)
     loader.setup(loadOptions)
+
+    if @errorInterceptor?
+      loader.fail(@errorInterceptor)
 
     if completeCallback? && _.isFunction(completeCallback)
       loader.always(completeCallback)

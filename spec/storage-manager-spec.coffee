@@ -821,10 +821,6 @@ describe 'Brainstem Storage Manager', ->
         expect(errorHandler.callCount).toEqual(1)
 
     describe "when no storage manager error interceptor is given", ->
-      it "has a default error interceptor", ->
-        manager = new Brainstem.StorageManager()
-        expect(manager.errorInterceptor).not.toBeUndefined()
-
       it "does nothing on unhandled errors", ->
         spyOn(sinon, 'logError').andCallThrough()
         server.respondWith "GET", "/api/time_entries?per_page=20&page=1", [ 401, {"Content-Type": "application/json"}, JSON.stringify({ errors: ["Invalid OAuth 2 Request"]}) ]
